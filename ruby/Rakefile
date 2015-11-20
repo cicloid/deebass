@@ -1,0 +1,5 @@
+task :test_specs do
+  sh 'ruby *_spec.rb'
+end
+
+task default: 'test_specs'
