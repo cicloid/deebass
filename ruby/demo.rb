@@ -1,6 +1,7 @@
 require 'benchmark'
 require_relative 'table'
 
+GC.disable
 table = Table.new
 
 table.create_index("username")
@@ -10,10 +11,12 @@ def user_status(number)
     number % 1000 == 0 ? 'active' : 'canceled'
 end
 
-100_000.times do |i|
+4_000_000.times do |i|
   table.insert({
     username: "user#{i}",
+    real: "user#{i}",
     name: "The User ##{i}",
+    weight: i*10,
     status: user_status(i)
   })
 end
