@@ -64,19 +64,23 @@ class Node
 
   end
 
-  def split(i)
+  def split(split_index)
+    split_child = @children[split_index]
     new_child = Node.new(@degree)
 
     middle = @degree - 1
 
-    new_child.keys << split_child.keys.slice!(middle + 1) || []
-    new_child.values << split_child.values.slice!(middle + 1) || []
-    new_child.add_children split_child.children.slice!(middle + 1)
+    new_child.keys = split_child.keys.slice!(middle + 1..-1)
+    new_child.values = split_child.values.slice!(middle + 1..-1)
 
-    @children.insert(i + 1, new_child)
+    if !split_child.leaf?
+      new_child.children = split_child.children.slice!(middle + 1..-1)
+    end
 
-    @keys.insert(i, split_child.keys[middle])
-    @values.insert(i, split_child.values[middle])
+    @children.insert(split_index + 1, new_child)
+
+    @keys.insert(split_index, split_child.keys[middle])
+    @values.insert(split_index, split_child.values[middle])
 
     split_child.keys.delete_at(middle)
     split_child.values.delete_at(middle)
@@ -84,7 +88,6 @@ class Node
 
   def add_children(children)
     @children << children
-    @children.compact!
   end
 
 
@@ -113,8 +116,9 @@ class BTree
       @root = Node.new(@degree)
       @root.add_children root
       @root.split(0)
+      root = @root
     end
-    @root.insert(key, value)
+    root.insert(key, value)
   end
 
   def search(key)
