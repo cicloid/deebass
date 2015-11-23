@@ -31,7 +31,7 @@ class Table
       ids = index.search(value) || []
       return ids.map {|id| find_by_id(id) }
     else
-      return @records.select {|record| record[attribute] === value }
+      return @records.select {|record| record[attribute] == value }
     end
 
   end

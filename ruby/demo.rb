@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'bundler/setup'
 require_relative 'table'
 require 'pry-byebug'
@@ -13,7 +15,7 @@ def user_status(number)
 end
 
 puts Benchmark.measure {
-300_000.times do |i|
+1_000_000.times do |i|
   table.insert({
     username: "user#{i}",
     real: "user#{i}",
@@ -31,9 +33,22 @@ puts "With Indexes"
 puts table.find_by_id(121)
 
 puts "#find_by username"
-puts Benchmark.measure { records = table.find_by(username: "user100") }
+puts Benchmark.measure { records = table.find_by(username: "user100000") }
 
 
 puts "#find_by status"
 puts Benchmark.measure { records = table.find_by(status: "active") }
 puts "Found #{records.size} records"
+
+puts "Without Indexes"
+table.clear_indexes
+
+puts "#find_by username"
+puts Benchmark.measure { records = table.find_by(username: "user100000") }
+
+
+puts "#find_by status"
+puts Benchmark.measure { records = table.find_by(status: "active") }
+puts "Found #{records.size} records"
+
+puts ":)"
