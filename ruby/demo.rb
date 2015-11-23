@@ -1,7 +1,8 @@
-require 'benchmark'
+require 'bundler/setup'
 require_relative 'table'
+require 'pry-byebug'
+require 'benchmark'
 
-GC.disable
 table = Table.new
 
 table.create_index("username")
@@ -11,7 +12,8 @@ def user_status(number)
     number % 1000 == 0 ? 'active' : 'canceled'
 end
 
-4_000_000.times do |i|
+puts Benchmark.measure {
+300_000.times do |i|
   table.insert({
     username: "user#{i}",
     real: "user#{i}",
@@ -21,10 +23,13 @@ end
   })
 end
 
+}
 
+records = []
+
+puts "With Indexes"
 puts table.find_by_id(121)
 
-records = ""
 puts "#find_by username"
 puts Benchmark.measure { records = table.find_by(username: "user100") }
 

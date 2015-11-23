@@ -111,6 +111,7 @@ class BTree
   end
 
   def insert(key, value)
+    return if key.nil? || value.nil?
     root = @root
     if root.full?
       @root = Node.new(@degree)
