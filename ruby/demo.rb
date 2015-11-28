@@ -15,7 +15,7 @@ def user_status(number)
 end
 
 puts Benchmark.measure {
-1_000_000.times do |i|
+500_000.times do |i|
   table.insert({
     username: "user#{i}",
     real: "user#{i}",
@@ -30,10 +30,10 @@ end
 records = []
 
 puts "With Indexes"
-puts table.find_by_id(121)
+puts table.find_by_id(121000)
 
 puts "#find_by username"
-puts Benchmark.measure { records = table.find_by(username: "user100000") }
+puts Benchmark.measure { records = table.find_by(username: "user499999") }
 
 
 puts "#find_by status"
