@@ -12,10 +12,6 @@ class Node
     @children.size === 0
   end
 
-  def children
-    @children
-  end
-
   def size
     @keys.size || 0
   end
